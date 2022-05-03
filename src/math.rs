@@ -101,7 +101,6 @@ fn rabin_miller(n : &BigUint, k : &u8) -> bool {
 }
 
 fn is_prime(n : &BigUint, k : &u8) -> bool {
-    //println!("Testing: {}", n);
     if *n <= One::one() {
         return false;
     } else if *n == BigUint::from(2 as u32) {

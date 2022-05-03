@@ -1,5 +1,6 @@
 # rust_rsa
-An implementation of RSA key generation, encryption and decryption in Rust.
+An implementation of RSA key generation, file encryption and file decryption in Rust.
+
 **Do not use this library for anything other than testing purposes.**
 
 ## Features
@@ -22,12 +23,12 @@ An implementation of RSA key generation, encryption and decryption in Rust.
 
 For Windows:
 ```bash
-.\rust_rsa.windows.x86_64.exe <SUBCOMMAND>
+.\rust_rsa.exe <SUBCOMMAND>
 ```
 
 For Linux:
 ```bash
-./rust_rsa.linux.x86_64 <SUBCOMMAND>
+./rust_rsa <SUBCOMMAND>
 ```
 
 If neither of these existing binaries work for you, you will need to compile the Rust code yourself. This command will compile the binary and place it in `target/release/`.

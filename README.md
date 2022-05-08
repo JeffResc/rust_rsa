@@ -19,26 +19,14 @@ An implementation of RSA key generation, file encryption and file decryption in 
 * [num-integer](https://crates.io/crates/num-integer)
 * [num-traits](https://crates.io/crates/num-traits)
 
-## Usage
-
-For Windows:
+## Installation
+Use a pre-compiled binary in releases or build from source:
 ```bash
-.\rust_rsa.exe <SUBCOMMAND>
-```
-
-For Linux:
-```bash
-./rust_rsa <SUBCOMMAND>
-```
-
-If neither of these existing binaries work for you, you will need to compile the Rust code yourself. This command will compile the binary and place it in `target/release/`.
-```bash
-cargo build --release 
+cargo install --git https://github.com/JeffResc/rust_rsa
 ```
 
 ### Main
-```
-rust_rsa 
+``` 
 An implementation of RSA encryption in Rust by Jeffrey Rescignano for CS 456.
 
 USAGE:

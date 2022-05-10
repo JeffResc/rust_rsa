@@ -1,6 +1,10 @@
 kind: pipeline
 type: docker
-name: rust-stable
+name: rust-stable-amd64
+
+platform:
+  arch: amd64
+  os: linux
 
 steps:
 - name: build
@@ -11,7 +15,11 @@ steps:
 ---
 kind: pipeline
 type: docker
-name: rust-beta
+name: rust-beta-amd64
+
+platform:
+  arch: amd64
+  os: linux
 
 steps:
 - name: build
@@ -22,7 +30,105 @@ steps:
 ---
 kind: pipeline
 type: docker
-name: rust-nightly
+name: rust-nightly-amd64
+
+platform:
+  arch: amd64
+  os: linux
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - rustup toolchain install nightly
+  - rustup default nightly
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-stable-linux-arm64
+
+platform:
+  arch: linux-arm64
+  os: linux
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-beta-linux-arm64
+
+platform:
+  arch: linux-arm64
+  os: linux
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-nightly-linux-arm64
+
+platform:
+  arch: linux-arm64
+  os: linux
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - rustup toolchain install nightly
+  - rustup default nightly
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-stable-linux-arm
+
+platform:
+  arch: linux-arm
+  os: linux
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-beta-linux-arm
+
+platform:
+  arch: linux-arm
+  os: linux
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-nightly-linux-arm
+
+platform:
+  arch: linux-arm
+  os: linux
 
 steps:
 - name: build

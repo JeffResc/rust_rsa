@@ -1,9 +1,33 @@
 kind: pipeline
 type: docker
-name: default
+name: rust-stable
 
 steps:
 - name: build
   image: rust
   commands:
-  - cargo build --verbose 
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-beta
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - cargo build --verbose --all
+
+---
+kind: pipeline
+type: docker
+name: rust-nightly
+
+steps:
+- name: build
+  image: rust
+  commands:
+  - rustup toolchain install nightly
+  - rustup default nightly
+  - cargo build --verbose --all

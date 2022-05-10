@@ -1,3 +1,5 @@
+[![Build Status](https://drone.jeffresc.dev/api/badges/JeffResc/rust_rsa/status.svg)](https://drone.jeffresc.dev/JeffResc/rust_rsa)
+
 # rust_rsa
 An implementation of RSA key generation, file encryption and file decryption in Rust.
 

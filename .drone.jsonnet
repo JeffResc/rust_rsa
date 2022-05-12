@@ -1,6 +1,6 @@
 local Pipeline(arch) = {
   kind: "pipeline",
-  type: "kubernetes",
+  type: "docker",
   name: "rust-stable-" + arch,
   steps: [
     {

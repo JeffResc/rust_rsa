@@ -8,12 +8,12 @@ local checks = {
       image: "rust",
       volumes: [
         {
-          name: "cargo",
-          path: "/cargo-cache",
+          name: "target",
+          path: "/target",
         }
       ],
       environment: {
-        CARGO_HOME: "/cargo-cache"
+        CARGO_TARGET_DIR: "/target"
       },
       commands: [
         "cargo check",
@@ -22,7 +22,7 @@ local checks = {
   ],
   volumes: [
     {
-      name: "cargo",
+      name: "target",
       temp: {}
     }
   ]
@@ -44,12 +44,12 @@ local install_docker_cross = {
       image: "rust",
       volumes: [
         {
-          name: "cargo",
-          path: "/cargo-cache",
+          name: "target",
+          path: "/target",
         }
       ],
       environment: {
-        CARGO_HOME: "/cargo-cache"
+        CARGO_TARGET_DIR: "/target"
       },
       commands: [
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
@@ -59,7 +59,7 @@ local install_docker_cross = {
   ],
   volumes: [
     {
-      name: "cargo",
+      name: "target",
       temp: {}
     }
   ]
@@ -86,20 +86,16 @@ local build(arch) = {
           readonly: true
         },
         {
-          name: "cargo",
-          path: "/cargo-cache",
-        },
-        {
-          name: "builds",
-          path: "/builds",
+          name: "target",
+          path: "/target",
         }
       ],
       environment: {
-        CARGO_HOME: "/cargo-cache"
+        CARGO_TARGET_DIR: "/target"
       },
       commands: [
         "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
-        "tar -czvf /builds/rust_rsa-" + arch + ".tar.gz -C target/" + arch + "/release ."
+        "tar -czvf /target/rust_rsa-" + arch + ".tar.gz -C /target/" + arch + "/release ."
       ],
     },
     {
@@ -107,13 +103,13 @@ local build(arch) = {
       image: "plugins/github-release",
       volumes: [
         {
-          name: "builds",
-          path: "/builds",
+          name: "target",
+          path: "/target",
         }
       ],
       settings: {
         "api_key": { from_secret: "github_token" },
-        "files": "/builds/rust_rsa-" + arch + ".tar.gz"
+        "files": "/target/rust_rsa-" + arch + ".tar.gz"
       },
     }
   ],
@@ -125,11 +121,7 @@ local build(arch) = {
       }
     },
     {
-      name: "builds",
-      temp: {}
-    },
-    {
-      name: "cargo",
+      name: "target",
       temp: {}
     }
   ]

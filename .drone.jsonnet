@@ -1,10 +1,37 @@
+local checks = {
+  kind: 'pipeline',
+  type: 'docker',
+  name: 'check',
+  steps: [{
+    name: 'check',
+    image: 'rust',
+    commands: [
+      "cargo check",
+    ],
+  }],
+};
+
+local install_docker_cross = {
+  kind: 'pipeline',
+  type: 'docker',
+  name: 'install_docker_cross',
+  steps: [{
+    name: 'check',
+    image: 'rust',
+    commands: [
+      "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
+      "cargo install cross",
+    ],
+  }],
+};
+
 local Pipeline(arch) = {
   kind: "pipeline",
   type: "docker",
   name: "rust-stable-" + arch,
   steps: [
     {
-      name: "build-release",
+      name: "build",
       image: "rust",
       volumes: [
         {
@@ -14,10 +41,31 @@ local Pipeline(arch) = {
         },
       ],
       commands: [
-        "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
-        "cargo install cross",
         "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
-      ]
+        "tar -czvf target/rust_rsa-" + arch + ".tar.gz target/" + arch + "/release",
+      ],
+      depends_on: [
+        "check"
+      ],
+      when: {
+        branch: [
+          "production",
+        ]
+      }
+    },
+    {
+      name: "publish",
+      image: "plugins/github-release"
+      settings: {
+        "api_key": { from_secret: 'github_token' }
+        "files": "target/rust_rsa-" + arch + ".tar.gz",
+      },
+      depends_on: [
+        "build",
+      ],
+      when: {
+        event: "tag"
+      },
     }
   ],
   volumes: [

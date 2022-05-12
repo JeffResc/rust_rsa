@@ -92,7 +92,6 @@ local build(arch) = {
   ]
 };
 
-
 [
   checks,
   install_docker_cross,

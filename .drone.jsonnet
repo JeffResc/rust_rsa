@@ -37,6 +37,9 @@ local build(arch) = {
     "check",
     "install_docker_cross"
   ],
+  when: {
+    event: "tag"
+  },
   steps: [
     {
       name: "build",
@@ -52,11 +55,6 @@ local build(arch) = {
         "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
         "tar -czvf target/rust_rsa-" + arch + ".tar.gz target/" + arch + "/release"
       ],
-      when: {
-        branch: [
-          "production"
-        ]
-      }
     },
     {
       name: "publish",
@@ -65,9 +63,6 @@ local build(arch) = {
         "api_key": { from_secret: "github_token" },
         "files": "target/rust_rsa-" + arch + ".tar.gz"
       },
-      when: {
-        event: "tag"
-      }
     }
   ],
   volumes: [

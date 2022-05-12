@@ -2,27 +2,31 @@ local checks = {
   kind: 'pipeline',
   type: 'docker',
   name: 'check',
-  steps: [{
-    name: 'check',
-    image: 'rust',
-    commands: [
-      "cargo check",
-    ],
-  }],
+  steps: [
+    {
+      name: 'check',
+      image: 'rust',
+      commands: [
+        "cargo check",
+      ]
+    }
+  ]
 };
 
 local install_docker_cross = {
   kind: 'pipeline',
   type: 'docker',
   name: 'install_docker_cross',
-  steps: [{
-    name: 'check',
-    image: 'rust',
-    commands: [
-      "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
-      "cargo install cross",
-    ],
-  }],
+  steps: [
+    {
+      name: 'check',
+      image: 'rust',
+      commands: [
+        "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
+        "cargo install cross"
+      ]
+    }
+  ]
 };
 
 local Pipeline(arch) = {
@@ -37,42 +41,42 @@ local Pipeline(arch) = {
         {
           name: "dockersock",
           path: "/var/run/docker.sock",
-          readonly: true,
-        },
+          readonly: true
+        }
       ],
       commands: [
         "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
-        "tar -czvf target/rust_rsa-" + arch + ".tar.gz target/" + arch + "/release",
+        "tar -czvf target/rust_rsa-" + arch + ".tar.gz target/" + arch + "/release"
       ],
       depends_on: [
         "check"
       ],
       when: {
         branch: [
-          "production",
+          "production"
         ]
       }
     },
     {
       name: "publish",
-      image: "plugins/github-release"
+      image: "plugins/github-release",
       settings: {
-        "api_key": { from_secret: 'github_token' }
-        "files": "target/rust_rsa-" + arch + ".tar.gz",
+        "api_key": { from_secret: 'github_token' },
+        "files": "target/rust_rsa-" + arch + ".tar.gz"
       },
       depends_on: [
-        "build",
+        "build"
       ],
       when: {
         event: "tag"
-      },
+      }
     }
   ],
   volumes: [
     {
       name: "dockersock",
       host: {
-        path: "/var/run/docker.sock",
+        path: "/var/run/docker.sock"
       }
     }
   ]
@@ -89,5 +93,5 @@ local Pipeline(arch) = {
   Pipeline("armv7-unknown-linux-musleabihf"),
   Pipeline("x86_64-pc-windows-gnu"),
   Pipeline("x86_64-unknown-linux-gnu"),
-  Pipeline("x86_64-unknown-linux-musl"),
+  Pipeline("x86_64-unknown-linux-musl")
 ]

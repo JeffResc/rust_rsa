@@ -33,6 +33,7 @@ local build(arch) = {
   kind: "pipeline",
   type: "docker",
   name: "rust-stable-" + arch,
+  depends_on: ["check", "install_docker_cross"],
   steps: [
     {
       name: "build",
@@ -48,9 +49,6 @@ local build(arch) = {
         "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
         "tar -czvf target/rust_rsa-" + arch + ".tar.gz target/" + arch + "/release"
       ],
-      depends_on: [
-        "check"
-      ],
       when: {
         branch: [
           "production"
@@ -64,9 +62,6 @@ local build(arch) = {
         "api_key": { from_secret: 'github_token' },
         "files": "target/rust_rsa-" + arch + ".tar.gz"
       },
-      depends_on: [
-        "build"
-      ],
       when: {
         event: "tag"
       }

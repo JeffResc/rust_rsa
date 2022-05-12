@@ -9,9 +9,12 @@ local checks = {
       volumes: [
         {
           name: "cargo",
-          path: "~/.cargo",
+          path: "/cargo-cache",
         }
       ],
+      environment: {
+        CARGO_HOME: "/cargo-cache"
+      },
       commands: [
         "cargo check",
       ]
@@ -42,9 +45,12 @@ local install_docker_cross = {
       volumes: [
         {
           name: "cargo",
-          path: "~/.cargo",
+          path: "/cargo-cache",
         }
       ],
+      environment: {
+        CARGO_HOME: "/cargo-cache"
+      },
       commands: [
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
@@ -81,13 +87,16 @@ local build(arch) = {
         },
         {
           name: "cargo",
-          path: "~/.cargo",
+          path: "/cargo-cache",
         },
         {
           name: "builds",
           path: "/builds",
         }
       ],
+      environment: {
+        CARGO_HOME: "/cargo-cache"
+      },
       commands: [
         "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
         "tar -czvf /builds/rust_rsa-" + arch + ".tar.gz -C target/" + arch + "/release ."

@@ -29,7 +29,7 @@ local install_docker_cross = {
   ]
 };
 
-local Pipeline(arch) = {
+local build(arch) = {
   kind: "pipeline",
   type: "docker",
   name: "rust-stable-" + arch,
@@ -83,15 +83,17 @@ local Pipeline(arch) = {
 };
 
 [
-  Pipeline("aarch64-unknown-linux-gnu"),
-  Pipeline("aarch64-unknown-linux-musl"),
-  Pipeline("arm-unknown-linux-gnueabi"),
-  Pipeline("arm-unknown-linux-gnueabihf"),
-  Pipeline("arm-unknown-linux-musleabi"),
-  Pipeline("arm-unknown-linux-musleabihf"),
-  Pipeline("armv7-unknown-linux-gnueabihf"),
-  Pipeline("armv7-unknown-linux-musleabihf"),
-  Pipeline("x86_64-pc-windows-gnu"),
-  Pipeline("x86_64-unknown-linux-gnu"),
-  Pipeline("x86_64-unknown-linux-musl")
+  checks(),
+  install_docker_cross(),
+  build("aarch64-unknown-linux-gnu"),
+  build("aarch64-unknown-linux-musl"),
+  build("arm-unknown-linux-gnueabi"),
+  build("arm-unknown-linux-gnueabihf"),
+  build("arm-unknown-linux-musleabi"),
+  build("arm-unknown-linux-musleabihf"),
+  build("armv7-unknown-linux-gnueabihf"),
+  build("armv7-unknown-linux-musleabihf"),
+  build("x86_64-pc-windows-gnu"),
+  build("x86_64-unknown-linux-gnu"),
+  build("x86_64-unknown-linux-musl")
 ]

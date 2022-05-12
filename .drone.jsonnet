@@ -1,11 +1,11 @@
 local checks = {
-  kind: 'pipeline',
-  type: 'docker',
-  name: 'check',
+  kind: "pipeline",
+  type: "docker",
+  name: "check",
   steps: [
     {
-      name: 'check',
-      image: 'rust',
+      name: "check",
+      image: "rust",
       commands: [
         "cargo check",
       ]
@@ -14,13 +14,13 @@ local checks = {
 };
 
 local install_docker_cross = {
-  kind: 'pipeline',
-  type: 'docker',
-  name: 'install_docker_cross',
+  kind: "pipeline",
+  type: "docker",
+  name: "install_docker_cross",
   steps: [
     {
-      name: 'install_docker_cross',
-      image: 'rust',
+      name: "install_docker_cross",
+      image: "rust",
       commands: [
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
@@ -33,7 +33,10 @@ local build(arch) = {
   kind: "pipeline",
   type: "docker",
   name: "rust-stable-" + arch,
-  depends_on: ["check", "install_docker_cross"],
+  depends_on: [
+    "check",
+    "install_docker_cross"
+  ],
   steps: [
     {
       name: "build",
@@ -59,7 +62,7 @@ local build(arch) = {
       name: "publish",
       image: "plugins/github-release",
       settings: {
-        "api_key": { from_secret: 'github_token' },
+        "api_key": { from_secret: "github_token" },
         "files": "target/rust_rsa-" + arch + ".tar.gz"
       },
       when: {

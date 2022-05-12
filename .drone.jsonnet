@@ -71,7 +71,7 @@ local build(arch) = {
           name: "builds",
           path: "/builds",
         }
-      ]
+      ],
       settings: {
         "api_key": { from_secret: "github_token" },
         "files": "/builds/rust_rsa-" + arch + ".tar.gz"

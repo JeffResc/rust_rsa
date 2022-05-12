@@ -82,9 +82,7 @@ local build(arch) = {
   ]
 };
 
-[
-  checks(),
-  install_docker_cross(),
+[checks] + [install_docker_cross] + [
   build("aarch64-unknown-linux-gnu"),
   build("aarch64-unknown-linux-musl"),
   build("arm-unknown-linux-gnueabi"),

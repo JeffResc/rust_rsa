@@ -6,9 +6,21 @@ local checks = {
     {
       name: "check",
       image: "rust",
+      volumes: [
+        {
+          name: "cargo",
+          path: "~/.cargo",
+        }
+      ],
       commands: [
         "cargo check",
       ]
+    }
+  ],
+  volumes: [
+    {
+      name: "cargo",
+      temp: {}
     }
   ]
 };
@@ -20,14 +32,29 @@ local install_docker_cross = {
   when: {
     event: "tag"
   },
+  depends_on: [
+    "check"
+  ],
   steps: [
     {
       name: "install_docker_cross",
       image: "rust",
+      volumes: [
+        {
+          name: "cargo",
+          path: "~/.cargo",
+        }
+      ],
       commands: [
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
       ]
+    }
+  ],
+  volumes: [
+    {
+      name: "cargo",
+      temp: {}
     }
   ]
 };
@@ -37,7 +64,6 @@ local build(arch) = {
   type: "docker",
   name: "rust-stable-" + arch,
   depends_on: [
-    "check",
     "install_docker_cross"
   ],
   when: {
@@ -52,6 +78,10 @@ local build(arch) = {
           name: "dockersock",
           path: "/var/run/docker.sock",
           readonly: true
+        },
+        {
+          name: "cargo",
+          path: "~/.cargo",
         },
         {
           name: "builds",
@@ -89,6 +119,10 @@ local build(arch) = {
       name: "builds",
       temp: {}
     },
+    {
+      name: "cargo",
+      temp: {}
+    }
   ]
 };
 

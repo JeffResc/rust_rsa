@@ -52,19 +52,29 @@ local build(arch) = {
           name: "dockersock",
           path: "/var/run/docker.sock",
           readonly: true
+        },
+        {
+          name: "builds",
+          path: "/builds",
         }
       ],
       commands: [
         "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
-        "tar -czvf target/rust_rsa-" + arch + ".tar.gz target/" + arch + "/release"
+        "tar -czvf /builds/rust_rsa-" + arch + ".tar.gz -C target/" + arch + "/release ."
       ],
     },
     {
       name: "publish",
       image: "plugins/github-release",
+      volumes: [
+        {
+          name: "builds",
+          path: "/builds",
+        }
+      ]
       settings: {
         "api_key": { from_secret: "github_token" },
-        "files": "target/rust_rsa-" + arch + ".tar.gz"
+        "files": "/builds/rust_rsa-" + arch + ".tar.gz"
       },
     }
   ],
@@ -74,7 +84,11 @@ local build(arch) = {
       host: {
         path: "/var/run/docker.sock"
       }
-    }
+    },
+    {
+      name: "builds",
+      temp: {}
+    },
   ]
 };
 

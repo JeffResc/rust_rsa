@@ -8,13 +8,10 @@ local checks = {
       image: "rust",
       volumes: [
         {
-          name: "target",
-          path: "/target",
+          name: "cargo",
+          path: "/usr/local/cargo",
         }
       ],
-      environment: {
-        CARGO_TARGET_DIR: "/target"
-      },
       commands: [
         "cargo check",
       ]
@@ -22,7 +19,7 @@ local checks = {
   ],
   volumes: [
     {
-      name: "target",
+      name: "cargo",
       temp: {}
     }
   ]
@@ -44,13 +41,10 @@ local install_docker_cross = {
       image: "rust",
       volumes: [
         {
-          name: "target",
-          path: "/target",
+          name: "cargo",
+          path: "/usr/local/cargo",
         }
       ],
-      environment: {
-        CARGO_TARGET_DIR: "/target"
-      },
       commands: [
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
@@ -59,7 +53,7 @@ local install_docker_cross = {
   ],
   volumes: [
     {
-      name: "target",
+      name: "cargo",
       temp: {}
     }
   ]
@@ -86,16 +80,20 @@ local build(arch) = {
           readonly: true
         },
         {
+          name: "cargo",
+          path: "/usr/local/cargo",
+        },
+        {
           name: "target",
           path: "/target",
         }
       ],
       environment: {
-        CARGO_TARGET_DIR: "/target"
+        "CROSS_DOCKER_IN_DOCKER": true,
       },
       commands: [
-        "CROSS_DOCKER_IN_DOCKER=true cross build --release --target " + arch,
-        "tar -czvf /target/rust_rsa-" + arch + ".tar.gz -C /target/" + arch + "/release ."
+        "cross build --release --target " + arch,
+        "tar -czvf /target/rust_rsa-" + arch + ".tar.gz -C target/" + arch + "/release ."
       ],
     },
     {
@@ -122,6 +120,10 @@ local build(arch) = {
     },
     {
       name: "target",
+      temp: {}
+    },
+    {
+      name: "cargo",
       temp: {}
     }
   ]

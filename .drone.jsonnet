@@ -17,6 +17,9 @@ local install_docker_cross = {
   kind: "pipeline",
   type: "docker",
   name: "install_docker_cross",
+  when: {
+    event: "tag"
+  },
   steps: [
     {
       name: "install_docker_cross",

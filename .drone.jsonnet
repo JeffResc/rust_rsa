@@ -8,6 +8,12 @@ local checks = {
       image: "rust",
       commands: [
         "cargo check",
+      ],
+      volumes: [
+        {
+          name: "cargo",
+          path: "/usr/local/cargo"
+        }
       ]
     },
     {
@@ -28,7 +34,19 @@ local checks = {
         },
         "path-style": true,
         mount: ['/usr/local/cargo']
-      }
+      },
+      volumes: [
+        {
+          name: "cargo",
+          path: "/usr/local/cargo"
+        }
+      ]
+    }
+  ],
+  volumes: [
+    {
+      name: "cargo",
+      temp: {}
     }
   ]
 };
@@ -62,7 +80,13 @@ local install_docker_cross = {
         },
         "path-style": true,
         mount: ['/usr/local/cargo']
-      }
+      },
+      volumes: [
+        {
+          name: "cargo",
+          path: "/usr/local/cargo"
+        }
+      ]
     },
     {
       name: "install_docker_cross",
@@ -76,7 +100,19 @@ local install_docker_cross = {
       commands: [
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
+      ],
+      volumes: [
+        {
+          name: "cargo",
+          path: "/usr/local/cargo"
+        }
       ]
+    }
+  ],
+  volumes: [
+    {
+      name: "cargo",
+      temp: {}
     }
   ]
 };
@@ -110,7 +146,13 @@ local build(arch) = {
         },
         "path-style": true,
         mount: ['/usr/local/cargo']
-      }
+      },
+      volumes: [
+        {
+          name: "cargo",
+          path: "/usr/local/cargo"
+        }
+      ]
     },
     {
       name: "build",
@@ -120,6 +162,10 @@ local build(arch) = {
           name: "dockersock",
           path: "/var/run/docker.sock",
           readonly: true
+        },
+        {
+          name: "cargo",
+          path: "/usr/local/cargo"
         }
       ],
       environment: {
@@ -154,6 +200,10 @@ local build(arch) = {
     },
     {
       name: "target",
+      temp: {}
+    },
+    {
+      name: "cargo",
       temp: {}
     }
   ]

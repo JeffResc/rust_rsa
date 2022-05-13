@@ -15,10 +15,10 @@ local checks = {
       image: "meltwater/drone-cache:dev",
       pull: true,
       settings: {
-        access-key: {
+        "access-key": {
           from_secret: "s3_access_key"
         },
-        secret-key: {
+        "secret-key": {
           from_secret: "s3_secret_key"
         },
         rebuild: true,
@@ -26,7 +26,7 @@ local checks = {
         endpoint: {
           from_env: "s3_server"
         },
-        path-style: true,
+        "path-style": true,
         mount: ['/usr/local/cargo']
       }
     }
@@ -45,14 +45,14 @@ local install_docker_cross = {
   ],
   steps: [
     {
-      name "restore-cache",
+      name: "restore-cache",
       image: "meltwater/drone-cache:dev",
       pull: true,
       settings: {
-        access-key: {
+        "access-key": {
           from_secret: "s3_access_key"
         },
-        secret-key: {
+        "secret-key": {
           from_secret: "s3_secret_key"
         },
         restore: true,
@@ -60,8 +60,9 @@ local install_docker_cross = {
         endpoint: {
           from_env: "s3_server"
         },
-        path-style: true,
+        "path-style": true,
         mount: ['/usr/local/cargo']
+      }
     },
     {
       name: "install_docker_cross",
@@ -92,14 +93,14 @@ local build(arch) = {
   },
   steps: [
     {
-      name "restore-cache",
+      name: "restore-cache",
       image: "meltwater/drone-cache:dev",
       pull: true,
       settings: {
-        access-key: {
+        "access-key": {
           from_secret: "s3_access_key"
         },
-        secret-key: {
+        "secret-key": {
           from_secret: "s3_secret_key"
         },
         restore: true,
@@ -107,8 +108,9 @@ local build(arch) = {
         endpoint: {
           from_env: "s3_server"
         },
-        path-style: true,
+        "path-style": true,
         mount: ['/usr/local/cargo']
+      }
     },
     {
       name: "build",

@@ -6,21 +6,29 @@ local checks = {
     {
       name: "check",
       image: "rust",
-      volumes: [
-        {
-          name: "cargo",
-          path: "/usr/local/cargo",
-        }
-      ],
       commands: [
         "cargo check",
       ]
-    }
-  ],
-  volumes: [
+    },
     {
-      name: "cargo",
-      temp: {}
+      name: "build-cache",
+      image: "meltwater/drone-cache:dev",
+      pull: true,
+      settings: {
+        access-key: {
+          from_secret: "s3_access_key"
+        },
+        secret-key: {
+          from_secret: "s3_secret_key"
+        },
+        rebuild: true,
+        bucket: "rust_rsa",
+        endpoint: {
+          from_env: "s3_server"
+        },
+        path-style: true,
+        mount: ['/usr/local/cargo']
+      }
     }
   ]
 };
@@ -37,6 +45,25 @@ local install_docker_cross = {
   ],
   steps: [
     {
+      name "restore-cache",
+      image: "meltwater/drone-cache:dev",
+      pull: true,
+      settings: {
+        access-key: {
+          from_secret: "s3_access_key"
+        },
+        secret-key: {
+          from_secret: "s3_secret_key"
+        },
+        restore: true,
+        bucket: "rust_rsa",
+        endpoint: {
+          from_env: "s3_server"
+        },
+        path-style: true,
+        mount: ['/usr/local/cargo']
+    },
+    {
       name: "install_docker_cross",
       image: "rust",
       volumes: [
@@ -49,12 +76,6 @@ local install_docker_cross = {
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
       ]
-    }
-  ],
-  volumes: [
-    {
-      name: "cargo",
-      temp: {}
     }
   ]
 };
@@ -71,6 +92,25 @@ local build(arch) = {
   },
   steps: [
     {
+      name "restore-cache",
+      image: "meltwater/drone-cache:dev",
+      pull: true,
+      settings: {
+        access-key: {
+          from_secret: "s3_access_key"
+        },
+        secret-key: {
+          from_secret: "s3_secret_key"
+        },
+        restore: true,
+        bucket: "rust_rsa",
+        endpoint: {
+          from_env: "s3_server"
+        },
+        path-style: true,
+        mount: ['/usr/local/cargo']
+    },
+    {
       name: "build",
       image: "rust",
       volumes: [
@@ -78,14 +118,6 @@ local build(arch) = {
           name: "dockersock",
           path: "/var/run/docker.sock",
           readonly: true
-        },
-        {
-          name: "cargo",
-          path: "/usr/local/cargo",
-        },
-        {
-          name: "target",
-          path: "/target",
         }
       ],
       environment: {
@@ -120,10 +152,6 @@ local build(arch) = {
     },
     {
       name: "target",
-      temp: {}
-    },
-    {
-      name: "cargo",
       temp: {}
     }
   ]

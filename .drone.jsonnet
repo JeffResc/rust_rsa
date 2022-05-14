@@ -107,6 +107,35 @@ local install_docker_cross = {
         "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
       ]
+    },
+    {
+      name: "build-cache",
+      image: "meltwater/drone-cache:dev",
+      pull: true,
+      environment: {
+        "AWS_ACCESS_KEY_ID": {
+          from_secret: "s3_access_key"
+        },
+        "AWS_SECRET_ACCESS_KEY": {
+          from_secret: "s3_secret_key"
+        },
+        "S3_ENDPOINT": {
+          from_secret: "s3_server"
+        },
+        "S3_BUCKET": "rust-rsa",
+        "S3_REGION": "us-1",
+        "PLUGIN_PATH_STYLE": "true"
+      },
+      settings: {
+        rebuild: true,
+        mount: ['/usr/local/cargo']
+      },
+      volumes: [
+        {
+          name: "cargo",
+          path: "/usr/local/cargo"
+        }
+      ]
     }
   ],
   volumes: [

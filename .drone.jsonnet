@@ -54,10 +54,10 @@ local checks = {
   ]
 };
 
-local "install-cross" = {
+local install_cross = {
   kind: "pipeline",
   type: "docker",
-  name: "install-cross",
+  name: "install_cross",
   when: {
     event: "tag"
   },
@@ -95,7 +95,7 @@ local "install-cross" = {
       ]
     },
     {
-      name: "install-cross",
+      name: "install_cross",
       image: "rust",
       volumes: [
         {
@@ -150,7 +150,7 @@ local build(arch) = {
   type: "docker",
   name: "rust-stable-" + arch,
   depends_on: [
-    "install-cross"
+    "install_cross"
   ],
   when: {
     event: "tag"
@@ -247,7 +247,7 @@ local build(arch) = {
 
 [
   checks,
-  install-cross,
+  install_cross,
   build("aarch64-unknown-linux-gnu"),
   build("aarch64-unknown-linux-musl"),
   build("arm-unknown-linux-gnueabi"),

@@ -20,14 +20,16 @@ local checks = {
       name: "build-cache",
       image: "meltwater/drone-cache:dev",
       pull: true,
-      settings: {
-        "access-key": {
+      environment: {
+        "AWS_ACCESS_KEY_ID": {
           from_secret: "s3_access_key"
         },
-        "secret-key": {
+        "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
-        },
-        "cache-key": {
+        }
+      },
+      settings: {
+        "cache_key": {
           from_env: "DRONE_BUILD_NUMBER"
         },
         rebuild: true,
@@ -69,14 +71,16 @@ local install_docker_cross = {
       name: "restore-cache",
       image: "meltwater/drone-cache:dev",
       pull: true,
-      settings: {
-        "access-key": {
+      environment: {
+        "AWS_ACCESS_KEY_ID": {
           from_secret: "s3_access_key"
         },
-        "secret-key": {
+        "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
-        },
-        "cache-key": {
+        }
+      },
+      settings: {
+        "cache_key": {
           from_env: "DRONE_BUILD_NUMBER"
         },
         restore: true,
@@ -132,14 +136,16 @@ local build(arch) = {
       name: "restore-cache",
       image: "meltwater/drone-cache:dev",
       pull: true,
-      settings: {
-        "access-key": {
+      environment: {
+        "AWS_ACCESS_KEY_ID": {
           from_secret: "s3_access_key"
         },
-        "secret-key": {
+        "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
-        },
-        "cache-key": {
+        }
+      },
+      settings: {
+        "cache_key": {
           from_env: "DRONE_BUILD_NUMBER"
         },
         restore: true,

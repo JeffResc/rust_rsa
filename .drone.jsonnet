@@ -32,7 +32,7 @@ local checks = {
         rebuild: true,
         bucket: "rust_rsa",
         endpoint: {
-          from_env: "s3_server"
+          from_secret: "s3_server"
         },
         "path-style": true,
         mount: ['/usr/local/cargo']
@@ -80,7 +80,7 @@ local install_docker_cross = {
         restore: true,
         bucket: "rust_rsa",
         endpoint: {
-          from_env: "s3_server"
+          from_secret: "s3_server"
         },
         "path-style": true,
         mount: ['/usr/local/cargo']
@@ -142,7 +142,7 @@ local build(arch) = {
         restore: true,
         bucket: "rust_rsa",
         endpoint: {
-          from_env: "s3_server"
+          from_secret: "s3_server"
         },
         "path-style": true,
         mount: ['/usr/local/cargo']

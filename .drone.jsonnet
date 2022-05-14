@@ -26,7 +26,7 @@ local checks = {
         },
         "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
-        }
+        },
         "S3_ENDPOINT": {
           from_secret: "s3_server"
         },
@@ -75,7 +75,7 @@ local install_docker_cross = {
         },
         "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
-        }
+        },
         "S3_ENDPOINT": {
           from_secret: "s3_server"
         },
@@ -138,7 +138,7 @@ local build(arch) = {
         },
         "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
-        }
+        },
         "S3_ENDPOINT": {
           from_secret: "s3_server"
         },

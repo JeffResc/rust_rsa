@@ -54,10 +54,10 @@ local checks = {
   ]
 };
 
-local install_docker_cross = {
+local install_cross = {
   kind: "pipeline",
   type: "docker",
-  name: "install_docker_cross",
+  name: "install_cross",
   when: {
     event: "tag"
   },
@@ -95,7 +95,7 @@ local install_docker_cross = {
       ]
     },
     {
-      name: "install_docker_cross",
+      name: "install_cross",
       image: "rust",
       volumes: [
         {
@@ -104,7 +104,6 @@ local install_docker_cross = {
         }
       ],
       commands: [
-        "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cargo install cross"
       ]
     },
@@ -151,7 +150,7 @@ local build(arch) = {
   type: "docker",
   name: "rust-stable-" + arch,
   depends_on: [
-    "install_docker_cross"
+    "install_cross"
   ],
   when: {
     event: "tag"
@@ -204,6 +203,7 @@ local build(arch) = {
         "CROSS_DOCKER_IN_DOCKER": true,
       },
       commands: [
+        "curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz | tar zxvf - --strip 1 -C /usr/bin docker/docker",
         "cross build --release --target " + arch,
         "tar -czvf /target/rust_rsa-" + arch + ".tar.gz -C target/" + arch + "/release ."
       ],
@@ -243,7 +243,7 @@ local build(arch) = {
 
 [
   checks,
-  install_docker_cross,
+  install_cross,
   build("aarch64-unknown-linux-gnu"),
   build("aarch64-unknown-linux-musl"),
   build("arm-unknown-linux-gnueabi"),

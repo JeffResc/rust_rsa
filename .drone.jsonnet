@@ -29,9 +29,6 @@ local checks = {
         }
       },
       settings: {
-        "cache_key": {
-          from_env: "DRONE_BUILD_NUMBER"
-        },
         rebuild: true,
         bucket: "rust_rsa",
         endpoint: {
@@ -80,9 +77,6 @@ local install_docker_cross = {
         }
       },
       settings: {
-        "cache_key": {
-          from_env: "DRONE_BUILD_NUMBER"
-        },
         restore: true,
         bucket: "rust_rsa",
         endpoint: {
@@ -145,9 +139,6 @@ local build(arch) = {
         }
       },
       settings: {
-        "cache_key": {
-          from_env: "DRONE_BUILD_NUMBER"
-        },
         restore: true,
         bucket: "rust_rsa",
         endpoint: {

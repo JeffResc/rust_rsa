@@ -30,7 +30,9 @@ local checks = {
         "S3_ENDPOINT": {
           from_secret: "s3_server"
         },
-        "S3_BUCKET": "rust-rsa",
+        "S3_BUCKET": {
+          from_secret: "s3_bucket"
+        },
         "S3_REGION": "us-1",
         "PLUGIN_PATH_STYLE": "true"
       },
@@ -81,7 +83,9 @@ local install_cross = {
         "S3_ENDPOINT": {
           from_secret: "s3_server"
         },
-        "S3_BUCKET": "rust-rsa",
+        "S3_BUCKET": {
+          from_secret: "s3_bucket"
+        },
         "S3_REGION": "us-1",
         "PLUGIN_PATH_STYLE": "true"
       },
@@ -123,7 +127,9 @@ local install_cross = {
         "S3_ENDPOINT": {
           from_secret: "s3_server"
         },
-        "S3_BUCKET": "rust-rsa",
+        "S3_BUCKET": {
+          from_secret: "s3_bucket"
+        },
         "S3_REGION": "us-1",
         "PLUGIN_PATH_STYLE": "true"
       },
@@ -174,7 +180,9 @@ local build(arch) = {
         "S3_ENDPOINT": {
           from_secret: "s3_server"
         },
-        "S3_BUCKET": "rust-rsa",
+        "S3_BUCKET": {
+          from_secret: "s3_bucket"
+        },
         "S3_REGION": "us-1",
         "PLUGIN_PATH_STYLE": "true"
       },

@@ -27,7 +27,9 @@ local checks = {
         "secret-key": {
           from_secret: "s3_secret_key"
         },
-        "cache-key": ${DRONE_BUILD_NUMBER},
+        "cache-key": {
+          from_env: "DRONE_BUILD_NUMBER"
+        },
         rebuild: true,
         bucket: "rust_rsa",
         endpoint: {
@@ -74,7 +76,9 @@ local install_docker_cross = {
         "secret-key": {
           from_secret: "s3_secret_key"
         },
-        "cache-key": ${DRONE_BUILD_NUMBER},
+        "cache-key": {
+          from_env: "DRONE_BUILD_NUMBER"
+        },
         restore: true,
         bucket: "rust_rsa",
         endpoint: {
@@ -135,7 +139,9 @@ local build(arch) = {
         "secret-key": {
           from_secret: "s3_secret_key"
         },
-        "cache-key": ${DRONE_BUILD_NUMBER},
+        "cache-key": {
+          from_env: "DRONE_BUILD_NUMBER"
+        },
         restore: true,
         bucket: "rust_rsa",
         endpoint: {

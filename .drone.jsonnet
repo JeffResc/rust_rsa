@@ -31,6 +31,7 @@ local checks = {
       settings: {
         rebuild: true,
         bucket: "rust_rsa",
+        region: "us-1",
         endpoint: {
           from_secret: "s3_server"
         },
@@ -79,6 +80,7 @@ local install_docker_cross = {
       settings: {
         restore: true,
         bucket: "rust_rsa",
+        region: "us-1",
         endpoint: {
           from_secret: "s3_server"
         },
@@ -141,6 +143,7 @@ local build(arch) = {
       settings: {
         restore: true,
         bucket: "rust_rsa",
+        region: "us-1",
         endpoint: {
           from_secret: "s3_server"
         },

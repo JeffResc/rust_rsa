@@ -27,15 +27,15 @@ local checks = {
         "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
         }
+        "S3_ENDPOINT": {
+          from_secret: "s3_server"
+        },
+        "S3_BUCKET": "rust-rsa",
+        "S3_REGION": "us-1",
+        "PLUGIN_PATH_STYLE": "true"
       },
       settings: {
         rebuild: true,
-        bucket: "rust-rsa",
-        region: "us-1",
-        endpoint: {
-          from_secret: "s3_server"
-        },
-        "path-style": true,
         mount: ['/usr/local/cargo']
       },
       volumes: [
@@ -76,15 +76,15 @@ local install_docker_cross = {
         "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
         }
+        "S3_ENDPOINT": {
+          from_secret: "s3_server"
+        },
+        "S3_BUCKET": "rust-rsa",
+        "S3_REGION": "us-1",
+        "PLUGIN_PATH_STYLE": "true"
       },
       settings: {
         restore: true,
-        bucket: "rust-rsa",
-        region: "us-1",
-        endpoint: {
-          from_secret: "s3_server"
-        },
-        "path-style": true,
         mount: ['/usr/local/cargo']
       },
       volumes: [
@@ -139,15 +139,15 @@ local build(arch) = {
         "AWS_SECRET_ACCESS_KEY": {
           from_secret: "s3_secret_key"
         }
+        "S3_ENDPOINT": {
+          from_secret: "s3_server"
+        },
+        "S3_BUCKET": "rust-rsa",
+        "S3_REGION": "us-1",
+        "PLUGIN_PATH_STYLE": "true"
       },
       settings: {
         restore: true,
-        bucket: "rust-rsa",
-        region: "us-1",
-        endpoint: {
-          from_secret: "s3_server"
-        },
-        "path-style": true,
         mount: ['/usr/local/cargo']
       },
       volumes: [

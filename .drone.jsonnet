@@ -197,6 +197,10 @@ local build(arch) = {
         {
           name: "cargo",
           path: "/usr/local/cargo"
+        },
+        {
+          name: "target",
+          path: "/target",
         }
       ],
       environment: {

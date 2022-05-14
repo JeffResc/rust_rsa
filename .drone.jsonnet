@@ -54,7 +54,7 @@ local checks = {
   ]
 };
 
-local install-cross = {
+local "install-cross" = {
   kind: "pipeline",
   type: "docker",
   name: "install-cross",

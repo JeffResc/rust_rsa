@@ -28,6 +28,7 @@ local checks = {
           from_secret: "s3_secret_key"
         }
       },
+      
       settings: {
         rebuild: true,
         bucket: "rust_rsa",

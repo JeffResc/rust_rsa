@@ -59,7 +59,9 @@ local install_cross = {
   type: "docker",
   name: "install_cross",
   when: {
-    event: "tag"
+    event: [
+      "tag"
+    ]
   },
   depends_on: [
     "check"
@@ -153,7 +155,9 @@ local build(arch) = {
     "install_cross"
   ],
   when: {
-    event: "tag"
+    event: [
+      "tag"
+    ]
   },
   steps: [
     {

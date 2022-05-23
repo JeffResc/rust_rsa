@@ -38,7 +38,8 @@ local checks = {
       },
       settings: {
         rebuild: true,
-        mount: ['/usr/local/cargo']
+        mount: ['/usr/local/cargo'],
+        archive_format: "gzip"
       },
       volumes: [
         {
@@ -91,7 +92,8 @@ local install_cross = {
       },
       settings: {
         restore: true,
-        mount: ['/usr/local/cargo']
+        mount: ['/usr/local/cargo'],
+        archive_format: "gzip"
       },
       volumes: [
         {
@@ -135,7 +137,8 @@ local install_cross = {
       },
       settings: {
         rebuild: true,
-        mount: ['/usr/local/cargo']
+        mount: ['/usr/local/cargo'],
+        archive_format: "gzip"
       },
       volumes: [
         {
@@ -188,7 +191,8 @@ local build(arch) = {
       },
       settings: {
         restore: true,
-        mount: ['/usr/local/cargo']
+        mount: ['/usr/local/cargo'],
+        archive_format: "gzip"
       },
       volumes: [
         {
